@@ -3,14 +3,6 @@ import { Forbidden } from "../utils/Errors.js"
 import { eventsService } from "./EventsService.js"
 
 class CommentsService {
-
-
-  async getCommentsInEvent(eventId) {
-    const comments = await dbContext.Comments.find({ eventId }).populate('creator', 'name comment')
-    return comments
-  }
-
-
   async createComment(commentData) {
     // Get comment
     const event = await eventsService.getOneEventById(commentData.eventId)

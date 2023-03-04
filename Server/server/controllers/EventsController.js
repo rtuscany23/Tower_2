@@ -5,7 +5,6 @@ import { ticketHoldersService } from "../services/TicketHoldersService.js"
 import BaseController from "../utils/BaseController.js"
 
 export class EventsController extends BaseController {
-// FIXME move get comments by eventid from comments controller to here
   constructor () {
     super('api/events')
     this.router
@@ -18,6 +17,15 @@ export class EventsController extends BaseController {
       // .delete('/:albumId', this.archiveAlbum)
   }
 
+  async getCommentsInEvent(req, res, next) {
+    try {
+      const eventId = req.params.eventId
+      const comments = await eventsService.getCommentsInEvent(eventId)
+      return res.send(comments)
+    } catch (error) {
+      next(error)
+    }
+  }
   async createEvent(req, res, next) {
     try {
       const eventData = req.body

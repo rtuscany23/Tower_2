@@ -11,16 +11,6 @@ export class CommentsController extends BaseController {
       
   }
 
-  async getCommentsInEvent(req, res, next) {
-    try {
-      const eventId = req.params.eventId
-      const comments = await commentsService.getCommentsInEvent(eventId)
-      return res.send(comments)
-    } catch (error) {
-      next(error)
-    }
-  }
-
   async createComment(req, res, next) {
     try {
       const commentData = req.body
