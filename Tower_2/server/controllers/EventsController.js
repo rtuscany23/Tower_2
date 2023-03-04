@@ -1,7 +1,6 @@
 import { Auth0Provider } from "@bcwdev/auth0provider"
 import { eventsService } from "../services/EventsService.js"
 import { ticketHoldersService } from "../services/TicketHoldersService.js"
-// import { picturesService } from "../services/PicturesService.js"
 import BaseController from "../utils/BaseController.js"
 
 export class EventsController extends BaseController {
@@ -65,31 +64,6 @@ export class EventsController extends BaseController {
       next(error)
     }
   }
-
-
-  // async getPicturesInAlbum(req, res, next) {
-  //   try {
-  //     const albumId = req.params.albumId
-  //     const pictures = await picturesService.getPicturesInAlbum(albumId)
-  //     return res.send(pictures)
-  //   } catch (error) {
-  //     next(error)
-  //   }
-  // }
-
-
-
-  // async archiveAlbum(req, res, next) {
-  //   try {
-  //     const albumId = req.params.albumId
-  //     const requestorId = req.userInfo.id
-  //     const album = await albumsService.archiveAlbum(albumId, requestorId)
-  //     return res.send(album)
-  //   } catch (error) {
-  //     next(error)
-  //   }
-  // }
-
 
 
 }
