@@ -9,7 +9,7 @@ class CommentsService {
     const res = await api.get(`/api/events/${eventId}/comments`)
     logger.log('getting comments', res.data)
     // /api/events/{{eventId}}/comments
-    AppState.comments = res.data.comments.map(c => new Comment(c))
+    AppState.comments = res.data.map(c => new Comment(c))
   }
 
 
@@ -21,17 +21,19 @@ async createComment(formData) {
 }
 
 
-// async deleteComment(commentId) {
-//     try {
-//       await api.delete(`/api/comments/${commentId}`)
-//       const index = AppState.comments.findIndex(c => c.id == commentId)
-//       if (index !== -1) {
-//         AppState.comments.splice(index, 1)
-//       }
-//     } catch (error) {
-//       logger.error(error)
-//     }
-//   }
+async deleteComment(commentId) {
+    try {
+      logger.log('commentId to delete', commentId)
+      const res = await api.delete(`/api/comments/${commentId}`)
+      logger.log('deleting comment', res.data)
+      const index = AppState.comments.findIndex(c => c.id == commentId)
+      if (index !== -1) {
+        AppState.comments.splice(index, 1)
+      }
+    } catch (error) {
+      logger.error(error)
+    }
+  }
 
 
 }

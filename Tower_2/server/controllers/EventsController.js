@@ -2,6 +2,7 @@ import { Auth0Provider } from "@bcwdev/auth0provider"
 import { eventsService } from "../services/EventsService.js"
 import { ticketHoldersService } from "../services/TicketHoldersService.js"
 import BaseController from "../utils/BaseController.js"
+import { commentsService } from "../services/CommentsService.js"
 
 export class EventsController extends BaseController {
   constructor () {

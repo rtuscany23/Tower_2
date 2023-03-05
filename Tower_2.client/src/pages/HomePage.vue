@@ -1,5 +1,5 @@
 <template>
-  <div v-if="account.id" class="container-fluid">
+  <div class="container-fluid">
     <div class="row">
       <div class="col-12 p-4">
         <h1 class="text-dark">Totally Cool Upcoming Events</h1>
@@ -31,10 +31,11 @@
 </template>
 
 <script>
-import { onMounted, computed } from 'vue';
+import { onMounted, watchEffect, computed } from 'vue';
 import { eventsService } from '../services/EventsService.js';
 import EventCard from '../components/EventCard.vue';
 import { AppState } from '../AppState.js';
+import Pop from '../utils/Pop.js';
 
 export default {
   setup() {
@@ -52,6 +53,12 @@ export default {
     onMounted(() => {
       getAllEvents();
     });
+
+    // watchEffect(() => {
+    //   if (route.params.eventId) {
+    //     getAllEvents();
+    //   }
+    // })
 
     return {
       account: computed(() => AppState.account),

@@ -151,7 +151,7 @@ export default {
       }
     }
 
-    // NOTE whenever a reactive property changes(route.params.albumId) rerun this code
+
     watchEffect(() => {
       if (route.params.eventId) {
         getOneEventById()

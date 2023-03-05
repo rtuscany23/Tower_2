@@ -59,6 +59,7 @@ import { eventsService } from '../services/EventsService.js';
 import { logger } from '../utils/Logger.js';
 import Pop from '../utils/Pop.js';
 import Datepicker from 'vue3-datepicker';
+import { useRoute, useRouter } from 'vue-router';
 
 export default {
   components: {
@@ -66,16 +67,21 @@ export default {
   },
 
   setup() {
+    const route = useRoute()
+    const router = useRouter()
+
     const editable = ref({
       category: 'concert'
     })
+
 
     return {
       editable,
       async createEvent() {
         try {
           const formData = editable.value
-          await eventsService.createEvent(formData)
+          const createdEvent = await eventsService.createEvent(formData)
+          router.push(`/events/${createdEvent.id}`)
           editable.value = {}
         } catch (error) {
           logger.error(error)
