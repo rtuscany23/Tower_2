@@ -7,15 +7,15 @@
             <!-- <router-link :to="{ name: 'Profile', params: { profileId: comment.creatorId } }"> -->
 
 
-            <!-- <img class="img-fluid rounded" :src="comment.creator.picture" :alt="comment.creator.name + ' picture'"
-              :title="comment.creator.name"> -->
+            <img class="img-fluid rounded" v-if="comment.creator.picture" :src="comment.creator.picture"
+              :alt="comment.creator.name + ' picture'" :title="comment.creator.name">
 
 
             <!-- </router-link> -->
           </div>
           <div class="card-body">
             <p class="card-text">{{ comment.body }}</p>
-            <p>{{ comment }}</p>
+            <!-- <p>{{ comment }}</p> -->
             <button class="btn btn-danger" v-if="comment.creatorId == account.id" @click="deleteComment">Delete
               Comment</button>
           </div>

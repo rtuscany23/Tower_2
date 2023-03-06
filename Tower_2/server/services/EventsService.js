@@ -3,6 +3,21 @@ import { BadRequest, Forbidden } from "../utils/Errors.js"
 
 class EventsService {
 
+  async editEventCapacity(eventId, addAbs){
+    const event = await this.getOneEventById(eventId)
+    event.capacity += addAbs
+    await event.save()
+    return event
+  }
+  async cancelEvent(eventId, requestorId) {
+   const event = await this.getOneEventById(eventId)
+   if (event.creatorId.toString() != requestorId) {
+      throw new Forbidden('You aren\'t allowed to shut down someone elses event bro! ')
+      }
+    event.isCanceled = true
+    await event.save()
+    return event
+  }
     async getCommentsInEvent(eventId) {
     const comments = await dbContext.Comments.find({ eventId }).populate('creator', 'name comment')
     return comments

@@ -14,7 +14,28 @@ export class EventsController extends BaseController {
       .get('/:eventId/tickets', this.getTicketsByEventId)
       .use(Auth0Provider.getAuthorizedUserInfo)
       .post('', this.createEvent)
-      // .delete('/:albumId', this.archiveAlbum)
+      .delete('/:eventId', this.cancelEvent)
+      .put('/:eventId', this.editEventCapacity)
+  }
+
+  async editEventCapacity(res, req, next){
+    try {
+      const eventId = req.params.eventId
+      const modifiedEvent = await eventsService.editEventCapacity(eventId, 0)
+      return res.send(modifiedEvent)
+    } catch (error) {
+      next(error)
+    }
+  }
+  async cancelEvent(req, res, next) {
+    try {
+      const eventId = req.params.eventId
+      const requestorId = req.userInfo.id
+      const canceledEvent = await eventsService.cancelEvent(eventId, requestorId)
+      return res.send(canceledEvent)
+    } catch (error) {
+      next(error)
+    }
   }
 
   async getCommentsInEvent(req, res, next) {

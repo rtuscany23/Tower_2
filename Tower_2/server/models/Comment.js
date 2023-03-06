@@ -7,9 +7,10 @@ export const CommentSchema = new Schema({
 
   body: { ...basicStringType, maxLength: 5000, },
   eventId: { type: Schema.Types.ObjectId, ref: 'Event', required: true },
-  creator: { type: Schema.Types.ObjectId, ref: 'Account', required: true }
+  creatorId: { type: Schema.Types.ObjectId, ref: 'Account', required: true }
 
 }, defaultSchemaOptions)
+
 
 CommentSchema.virtual('event', {
   localField: 'eventId',

@@ -20,7 +20,9 @@
               <div class="col-6">
                 <p>{{ event.location }}</p>
               </div>
-              <div class="col-6"></div>
+              <div class="col-6">
+                <p>Seats left: {{ event.capacity }}</p>
+              </div>
             </div>
             <div class="row">
               <p>{{ event.description }}</p>
@@ -28,17 +30,35 @@
 
 
             <div>
-              <button v-if="account.id && !event.isCanceled && !foundTicket" @click="createTicket()"
+              <button v-if="account.id == event.creatorId && !event.isCanceled" @click="cancelEvent()"
+                class="btn btn-danger">
+                <span>
+                  Cancel Event
+                </span>
+              </button>
+              <button v-if="account.id && !event.isCanceled && !foundTicket && event.capacity > 0" @click="createTicket()"
                 class="btn btn-warning">
                 <i class="mdi mdi-plus-box"></i>
                 <span>
                   Attend
                 </span>
               </button>
-              <div v-else-if="event.isCanceled" class="bg-danger rounded text-center p-3">
+              <button v-if="account.id && !event.isCanceled && foundTicket" @click="deleteTicket()"
+                class="btn btn-danger">
+                <span>
+                  Cancel Ticket
+                </span>
+              </button>
+              <div v-if="event.isCanceled" class="bg-danger rounded text-center p-3">
                 <i class="mdi mdi-lock"></i>
                 <span>
-                  Canceled
+                  Event Canceled
+                </span>
+              </div>
+              <div v-if="event.capacity == 0" class="bg-danger rounded text-center p-3">
+                <i class="mdi mdi-lock"></i>
+                <span>
+                  Event Sold Out
                 </span>
               </div>
             </div>
@@ -119,10 +139,10 @@ export default {
     const editable = ref({})
     const route = useRoute()
     const router = useRouter()
+    const eventId = route.params.eventId
 
     async function getOneEventById() {
       try {
-        const eventId = route.params.eventId
         await eventsService.getOneEventById(eventId)
       } catch (error) {
         Pop.error('[Getting Event By Id]')
@@ -132,7 +152,6 @@ export default {
 
     async function getTicketsByEventId() {
       try {
-        const eventId = route.params.eventId
         await ticketsService.getTicketsByEventId(eventId)
       } catch (error) {
         logger.error(error)
@@ -142,12 +161,33 @@ export default {
 
     async function getComments() {
       try {
-        const eventId = route.params.eventId
         await commentsService.getComments(eventId);
       }
       catch (error) {
         logger.error(error);
         Pop.error(error.message);
+      }
+    }
+
+    async function deleteTicket() {
+      try {
+        const deletedTicket = await ticketsService.deleteTicket(eventId)
+        logger.log(deletedTicket)
+      }
+      catch (error) {
+        console.error(error)
+        Pop.error(error)
+      }
+    }
+
+    async function cancelEvent() {
+      try {
+        const canceledEvent = await eventsService.cancelEvent(eventId)
+        logger.log(canceledEvent)
+      }
+      catch (error) {
+        console.error(error)
+        Pop.error(error)
       }
     }
 
@@ -168,6 +208,8 @@ export default {
       tickets: computed(() => AppState.tickets),
       comments: computed(() => AppState.comments),
       foundTicket: computed(() => AppState.tickets.find(t => t.id == AppState.account.id)),
+      deleteTicket,
+      cancelEvent,
 
       async createComment() {
         try {
@@ -182,12 +224,15 @@ export default {
 
       async createTicket() {
         try {
-          await ticketsService.createTicket({ eventId: route.params.eventId })
+          const newTicket = await ticketsService.createTicket({ eventId: route.params.eventId })
+          logger.log(newTicket)
         } catch (error) {
           logger.error(error)
           Pop.error(error.message)
         }
       }
+
+
 
 
     }

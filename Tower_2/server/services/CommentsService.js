@@ -12,7 +12,7 @@ class CommentsService {
     }
     const comment = await dbContext.Comments.create(commentData)
     // NOTE you only have to drop a line to populate on creates!
-    await comment.populate('creator', 'name comment')
+    await comment.populate('creator','name picture')
     return comment
   }
 

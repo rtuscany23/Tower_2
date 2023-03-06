@@ -5,7 +5,19 @@ import { api } from "./AxiosService.js"
 
 class EventsService {
 
+  async cancelEvent(eventId) {
+    const res = await api.delete('api/events/' + eventId)
+    logger.log('canceling event', res.data)
+    AppState.event = new Event(res.data)
+  }
+
   async getAllEvents() {
+    const res = await api.get('api/events')
+    const events = res.data.map(e => new Event(e))
+    AppState.events = events
+  }
+
+    async getEventsByCreatorId(creatorId) {
     const res = await api.get('api/events')
     const events = res.data.map(e => new Event(e))
     AppState.events = events
@@ -23,14 +35,14 @@ class EventsService {
     AppState.event = new Event(res.data)
   }
   
+
+
 }
+
+
+
 
 export const eventsService = new EventsService()
 
 
   
-// async archiveAlbum(albumId) {
-//   const res = await api.delete('api/albums/' + albumId)
-//   logger.log('archiving album', res.data)
-//   AppState.album = new Album(res.data)
-// }
