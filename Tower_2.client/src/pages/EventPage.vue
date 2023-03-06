@@ -9,8 +9,11 @@
 
           <div class="col-7">
             <div class="row">
-              <div class="col-6">
+              <div class="col-6" v-if="!event.isCanceled">
                 <p><b>{{ event.name }}</b></p>
+              </div>
+              <div class="col-6" v-else-if="event.isCanceled">
+                <p class="text-decoration-line-through"><b>{{ event.name }}</b></p>
               </div>
               <div class="col-6">
                 <p><b>{{ new Date(event.startDate).toLocaleDateString('uk') }}</b></p>
@@ -30,32 +33,38 @@
 
 
             <div>
-              <button v-if="account.id == event.creatorId && !event.isCanceled" @click="cancelEvent()"
-                class="btn btn-danger">
-                <span>
-                  Cancel Event
-                </span>
-              </button>
-              <button v-if="account.id && !event.isCanceled && !foundTicket && event.capacity > 0" @click="createTicket()"
-                class="btn btn-warning">
-                <i class="mdi mdi-plus-box"></i>
-                <span>
-                  Attend
-                </span>
-              </button>
-              <button v-if="account.id && !event.isCanceled && foundTicket" @click="deleteTicket()"
-                class="btn btn-danger">
-                <span>
-                  Cancel Ticket
-                </span>
-              </button>
-              <div v-if="event.isCanceled" class="bg-danger rounded text-center p-3">
+              <div class="p-1">
+                <button v-if="account.id == event.creatorId && !event.isCanceled" @click="cancelEvent()"
+                  class="btn btn-danger">
+                  <span>
+                    Cancel Event
+                  </span>
+                </button>
+              </div>
+              <div class="p-1">
+                <button v-if="account.id && !event.isCanceled && !foundTicket && event.capacity > 0"
+                  @click="createTicket()" class="btn btn-warning">
+                  <i class="mdi mdi-plus-box"></i>
+                  <span>
+                    Attend
+                  </span>
+                </button>
+              </div>
+              <div class="p-1">
+                <button v-if="account.id && !event.isCanceled && foundTicket" @click="deleteTicket()"
+                  class="btn btn-danger">
+                  <span>
+                    Cancel Ticket
+                  </span>
+                </button>
+              </div>
+              <div v-if="event.isCanceled" class="bg-danger rounded text-center p-3 my-3">
                 <i class="mdi mdi-lock"></i>
                 <span>
                   Event Canceled
                 </span>
               </div>
-              <div v-if="event.capacity == 0" class="bg-danger rounded text-center p-3">
+              <div v-if="event.capacity == 0" class="bg-danger rounded text-center p-3 my-3">
                 <i class="mdi mdi-lock"></i>
                 <span>
                   Event Sold Out
@@ -66,22 +75,11 @@
 
 
 
-          <div class="col-12 mb-3 d-flex justify-content-around">
+          <div class="col-12 my-3 d-flex justify-content-around">
             <div class="bg-warning rounded p-2 fw-bold">
               <!-- <div>{{ collabs.length }}</div> -->
-              <div>People Attending</div>
+              <div class="p-1">People Attending</div>
             </div>
-            <!-- <button v-if="!foundCollab" @click="createCollaboration()" :disabled="album.archived" class="btn btn-success">
-              <i class="mdi mdi-heart"></i>
-              <br>
-              <b>Collab</b>
-            </button> -->
-
-            <!-- <button v-else @click="removeCollaboration(foundCollab.collaboratorId)" class="btn btn-danger">
-              <i class="mdi mdi-close-circle"></i>
-              <br>
-              <b>UnCollab</b>
-            </button> -->
           </div>
           <div class="col-12">
             <div class="row">

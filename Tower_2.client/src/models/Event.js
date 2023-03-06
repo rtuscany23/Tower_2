@@ -1,4 +1,3 @@
-
 export class Event {
 
   constructor (data) {
@@ -16,9 +15,3 @@ export class Event {
 
 }
 
-// export class CollabAlbum extends Album {
-//   constructor (data) {
-//     super(data.album)
-//     this.collaboratorId = data.id
-//   }
-// }

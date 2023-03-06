@@ -3,19 +3,12 @@
     <div class="row">
       <div class="col-12 d-flex justify-content-center mt-3">
         <div class="card text-center">
-          <div>
-            <!-- <router-link :to="{ name: 'Profile', params: { profileId: comment.creatorId } }"> -->
-
-
+          <div class="my-2">
             <img class="img-fluid rounded" v-if="comment.creator.picture" :src="comment.creator.picture"
               :alt="comment.creator.name + ' picture'" :title="comment.creator.name">
-
-
-            <!-- </router-link> -->
           </div>
           <div class="card-body">
             <p class="card-text">{{ comment.body }}</p>
-            <!-- <p>{{ comment }}</p> -->
             <button class="btn btn-danger" v-if="comment.creatorId == account.id" @click="deleteComment">Delete
               Comment</button>
           </div>
@@ -37,7 +30,7 @@ import { logger } from '../utils/Logger.js';
 export default {
   props: {
     comment: {
-      type: Comment,
+      type: [Comment, Object],
       required: true
     }
   },
@@ -47,7 +40,6 @@ export default {
       try {
         await commentsService.deleteComment(props.comment.commentId)
         logger.log(props.comment)
-        // remove the comment from the local array of comments
         const index = AppState.comments.findIndex(c => c.commentId === props.comment.commentId)
         if (index !== -1 && AppState.comments) {
           AppState.comments.splice(index, 1)

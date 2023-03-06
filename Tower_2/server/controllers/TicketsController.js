@@ -11,6 +11,8 @@ export class TicketsController extends BaseController {
       .delete('/:ticketId', this.deleteTicketById)
   }
 
+
+
   async createTicket(req, res, next) {
     try {
       const ticketHolderData = req.body

@@ -4,34 +4,27 @@
       <div class="col-12 p-4">
         <h1 class="text-dark">Totally Cool Upcoming Events</h1>
       </div>
+
+      <div class="col-10 m-auto">
+        <div class="bg-primary rounded p-3 d-flex justify-content-around">
+          <button @click="changeFilterType('')" class="btn btn-outline-light">All</button>
+          <button @click="changeFilterType('concert')" class="btn btn-outline-light">Concert</button>
+          <button @click="changeFilterType('convention')" class="btn btn-outline-light">Convention</button>
+          <button @click="changeFilterType('sport')" class="btn btn-outline-light">Sport</button>
+          <button @click="changeFilterType('digital')" class="btn btn-outline-light">Digital</button>
+        </div>
+      </div>
+
+
       <div v-for="e in events" class="col-md-3">
         <EventCard :event="e" />
       </div>
     </div>
   </div>
-
-  <!-- <div class="container">
-      <div class="row my-4">
-        <div class="col-12 p-4 mb-3">
-          <h1 class="text-light">Events</h1>
-        </div>
-        <div class="col-10 m-auto">
-          <div class="bg-primary rounded p-3 d-flex justify-content-around">
-            <button @click="changeFilterCategory('')" class="btn btn-outline-light">All</button>
-            <button @click="changeFilterCategory('animals')" class="btn btn-outline-light">Animals</button>
-            <button @click="changeFilterCategory('games')" class="btn btn-outline-light">Games</button>
-            <button @click="changeFilterCategory('misc')" class="btn btn-outline-light">Misc</button>
-          </div>
-        </div>
-        <div class="col-md-3" v-for="a in albums" :key="a.id">
-          <AlbumCard :album="a" />
-        </div>
-      </div>
-    </div> -->
 </template>
 
 <script>
-import { onMounted, watchEffect, computed } from 'vue';
+import { onMounted, watchEffect, computed, ref } from 'vue';
 import { eventsService } from '../services/EventsService.js';
 import EventCard from '../components/EventCard.vue';
 import { AppState } from '../AppState.js';
@@ -39,7 +32,7 @@ import Pop from '../utils/Pop.js';
 
 export default {
   setup() {
-    // const filterCategory = ref('')
+    const filterType = ref('')
 
     async function getAllEvents() {
       try {
@@ -54,33 +47,25 @@ export default {
       getAllEvents();
     });
 
-    // watchEffect(() => {
-    //   if (route.params.eventId) {
-    //     getAllEvents();
-    //   }
-    // })
-
     return {
+      events: computed(() => {
+        if (!filterType.value) {
+          return AppState.events
+        }
+        else {
+          return AppState.events.filter(e => e.type == filterType.value)
+        }
+      }),
       account: computed(() => AppState.account),
-      events: computed(() => AppState.events
+      changeFilterType(type) {
+        filterType.value = type
+      },
 
-        // {
-        //   if (!filterCategory.value) {
-        //     return AppState.events
-        //   }
-        //   else {
-        //     return AppState.events.filter(e => e.category == filterCategory.value)
-        //   }
-        // }
-
-      ),
-
-
-      //myEvents: computed(() => AppState.myEvents),      
     }
   },
   components: { EventCard }
 }
+
 </script>
 
 <style scoped lang="scss">

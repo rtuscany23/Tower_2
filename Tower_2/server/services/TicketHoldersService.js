@@ -4,6 +4,18 @@ import { eventsService } from "./EventsService.js"
 
 class TicketHoldersService {
 
+  async getEventsByUserId(accountId){
+    const events = await dbContext.TicketHolders.find({accountId})
+      .populate({
+        path: 'event'
+        // ,
+        // populate: {
+        //   path: 'creator',
+        //   select: 'name picture'
+        // }
+      })
+    return events
+  }
 
   async getTicketsByEventId(eventId) {
     const ticketHolders = await dbContext.TicketHolders.find({ eventId })

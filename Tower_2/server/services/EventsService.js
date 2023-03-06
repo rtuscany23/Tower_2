@@ -19,7 +19,7 @@ class EventsService {
     return event
   }
     async getCommentsInEvent(eventId) {
-    const comments = await dbContext.Comments.find({ eventId }).populate('creator', 'name comment')
+    const comments = await dbContext.Comments.find({ eventId }).populate('creator','name picture')
     return comments
   }
   async createEvent(eventData) {
